@@ -1,24 +1,25 @@
 require 'search_object'
 require 'search_object/plugin/graphql'
 
-class Resolvers::UsersSearch
+class Resolvers::BulletinsSearch
   # include SearchObject for GraphQL
   include SearchObject.module(:graphql)
 
   # scope is starting point for search
-  scope { User.all }
+  scope { Bulletin.all }
 
-  type types[Types::UserType]
+  type types[Types::BulletinType]
 
   # inline input type definition for the advanced filter
-  class UserFilter < ::Types::BaseInputObject
+  class BulletinFilter < ::Types::BaseInputObject
     argument :OR, [self], required: false
-    argument :email_contains, String, required: false
+    argument :message_contains, String, required: false
     # argument :url_contains, String, required: false
   end
 
   # when "filter" is passed "apply_filter" would be called to narrow the scope
-  option :filter, type: UserFilter, with: :apply_filter
+  option :filter, type: BulletinFilter, with: :apply_filter
+  # option :filter, type: BulletinFilter, with: :apply_filter
   option :first, type: types.Int, with: :apply_first
   option :skip, type: types.Int, with: :apply_skip
 
@@ -37,8 +38,8 @@ class Resolvers::UsersSearch
   end
 
   def normalize_filters(value, branches = [])
-    scope = User.all
-    scope = scope.where('email LIKE ?', "%#{value[:email_contains]}%") if value[:email_contains]
+    scope = Bulletin.all
+    scope = scope.where('message LIKE ?', "%#{value[:message_contains]}%") if value[:message_contains]
     # scope = scope.where('url LIKE ?', "%#{value[:url_contains]}%") if value[:url_contains]
 
     branches << scope
