@@ -8,5 +8,7 @@ module Types
     field :occupation, String, null: false
     field :gender, String, null: false
     field :birthdate, GraphQL::Types::ISO8601Date, null: false
+    field :votes, [VoteType], null: false
+    field :bulletins, [BulletinType], null: false
   end
 end
