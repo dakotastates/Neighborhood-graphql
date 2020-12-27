@@ -5,6 +5,7 @@ class GraphqlController < ApplicationController
   # protect_from_forgery with: :null_session
 
   def execute
+    # byebug
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
@@ -24,6 +25,7 @@ class GraphqlController < ApplicationController
   private
 
   def current_user
+    # byebug
     # if we want to change the sign-in strategy, this is the place to do it
     return unless session[:token]
 
